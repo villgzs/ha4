@@ -57,7 +57,9 @@ RUN \
     && if ls homeassistant/home_assistant_*.whl 1> /dev/null 2>&1; then \
         uv pip install homeassistant/home_assistant_*.whl; \
     fi \
-    && uv pip install --constraint /tmp/constraints.txt "cython==3.2.1" \
+    && uv pip install \
+        --index-strategy unsafe-best-match \
+        --constraint /tmp/constraints.txt "cython==3.2.6" \
     && UV_CONSTRAINT=/tmp/constraints.txt uv pip install \
         -r homeassistant/requirements_all.txt \
         --index-strategy unsafe-best-match \
