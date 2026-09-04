@@ -45,7 +45,7 @@ RUN \
     # Verify go2rtc can be executed
     && go2rtc --version \
     && apk add --no-cache libffi libjpeg-turbo zlib freetype \
-    && apk add --no-cache --virtual .build-deps cmake make ninja meson gcc g++ musl-dev rust cargo linux-headers libffi-dev jpeg-dev zlib-dev freetype-dev \
+    # && apk add --no-cache --virtual .build-deps cmake make ninja meson gcc g++ musl-dev rust cargo linux-headers libffi-dev jpeg-dev zlib-dev freetype-dev \
     && apk add --no-cache --virtual .build-deps \
         cmake make ninja meson gcc g++ musl-dev \
         rust cargo linux-headers \
