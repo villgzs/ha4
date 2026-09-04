@@ -83,7 +83,7 @@ RUN \
         --index-strategy unsafe-best-match \
         --constraint /tmp/constraints.txt "cython==3.2.6" \
     && UV_CONSTRAINT=/tmp/constraints.txt uv pip install \
-        --no-build-isolation \
+        # --no-build-isolation 
         -r homeassistant/requirements_all.txt \
         --index-strategy unsafe-best-match \
     && apk del --no-cache .build-deps
