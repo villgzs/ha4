@@ -42,6 +42,7 @@ RUN \
     && apk add --no-cache --virtual .build-deps cmake make ninja gcc g++ musl-dev rust cargo linux-headers libffi-dev jpeg-dev zlib-dev freetype-dev \
     # Install uv at the version pinned in the requirements file
     && pip3 install --no-cache-dir "uv==$(awk -F'==' '/^uv==/{print $2}' homeassistant/requirements.txt)" \
+    && pip3 install --no-cache-dir setuptools wheel \
     && uv pip install \
         --no-build-isolation \
         --index-strategy unsafe-best-match \
