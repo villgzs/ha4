@@ -33,9 +33,15 @@ COPY --from=ghcr.io/alexxit/go2rtc:1.9.14@sha256:675c318b23c06fd862a61d262240c9a
 ## Setup Home Assistant Core dependencies
 COPY --parents requirements.txt homeassistant/package_constraints.txt homeassistant/
 
+# 1. Beállítjuk a környezeti változókat a teljes Docker image-re
+ENV PIP_BUILD_CONSTRAINT=/etc/pip-build-constraints.txt
+ENV UV_BUILD_CONSTRAINT=/etc/pip-build-constraints.txt
+
 #RUN --network=host
 
 RUN \
+    # A korlátozás rögzítése a rendszer szintű fájlba
+    echo "cython<3.2.7" > /etc/pip-build-constraints.txt \
     # Verify go2rtc can be executed
     go2rtc --version \
     && apk add --no-cache libffi libjpeg-turbo zlib freetype \
@@ -45,6 +51,7 @@ RUN \
         rust cargo linux-headers \
         libffi-dev jpeg-dev zlib-dev freetype-dev \
         ffmpeg-dev \
+    && echo "cython<3.2.7" > build-constraints.txt \
     # Install uv at the version pinned in the requirements file
     && pip3 install --no-cache-dir "uv==$(awk -F'==' '/^uv==/{print $2}' homeassistant/requirements.txt)" \
     && pip3 install --no-cache-dir \
@@ -58,7 +65,6 @@ RUN \
         expandvars \
         cffi \
     && uv pip install \
-        --no-build-isolation \
         --index-strategy unsafe-best-match \
         -r homeassistant/requirements.txt \
     && apk del --no-cache .build-deps
@@ -74,7 +80,6 @@ RUN \
         uv pip install homeassistant/home_assistant_*.whl; \
     fi \
     && uv pip install \
-        --no-build-isolation \
         --index-strategy unsafe-best-match \
         --constraint /tmp/constraints.txt "cython==3.2.6" \
     && UV_CONSTRAINT=/tmp/constraints.txt uv pip install \
