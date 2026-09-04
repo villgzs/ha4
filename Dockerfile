@@ -40,9 +40,22 @@ RUN \
     go2rtc --version \
     && apk add --no-cache libffi libjpeg-turbo zlib freetype \
     && apk add --no-cache --virtual .build-deps cmake make ninja meson gcc g++ musl-dev rust cargo linux-headers libffi-dev jpeg-dev zlib-dev freetype-dev \
+    && apk add --no-cache --virtual .build-deps \
+        cmake make ninja meson gcc g++ musl-dev \
+        rust cargo linux-headers \
+        libffi-dev jpeg-dev zlib-dev freetype-dev \
+        ffmpeg-dev \
     # Install uv at the version pinned in the requirements file
     && pip3 install --no-cache-dir "uv==$(awk -F'==' '/^uv==/{print $2}' homeassistant/requirements.txt)" \
-    && pip3 install --no-cache-dir setuptools wheel pybind11 meson-python\
+    && pip3 install --no-cache-dir \
+        setuptools \
+        wheel \
+        pybind11 \
+        meson-python \
+        poetry-core \
+        maturin \
+        flit-core \
+        expandvars \
     && uv pip install \
         --no-build-isolation \
         --index-strategy unsafe-best-match \
