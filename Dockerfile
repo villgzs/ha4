@@ -56,6 +56,7 @@ RUN \
         maturin \
         flit-core \
         expandvars \
+        cffi \
     && uv pip install \
         --no-build-isolation \
         --index-strategy unsafe-best-match \
