@@ -43,6 +43,7 @@ RUN \
     # Install uv at the version pinned in the requirements file
     && pip3 install --no-cache-dir "uv==$(awk -F'==' '/^uv==/{print $2}' homeassistant/requirements.txt)" \
     && uv pip install \
+        --no-build-isolation \
         --index-strategy unsafe-best-match \
         -r homeassistant/requirements.txt \
     && apk del --no-cache .build-deps
@@ -58,9 +59,11 @@ RUN \
         uv pip install homeassistant/home_assistant_*.whl; \
     fi \
     && uv pip install \
+        --no-build-isolation \
         --index-strategy unsafe-best-match \
         --constraint /tmp/constraints.txt "cython==3.2.6" \
     && UV_CONSTRAINT=/tmp/constraints.txt uv pip install \
+        --no-build-isolation \
         -r homeassistant/requirements_all.txt \
         --index-strategy unsafe-best-match \
     && apk del --no-cache .build-deps
