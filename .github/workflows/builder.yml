@@ -2,11 +2,11 @@ name: Build 32-bit Home Assistant
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: "0 4 * * *"
-  push:
-    branches:
-      - main
+  # schedule:
+  #  - cron: "0 4 * * *"
+  # push:
+  #   branches:
+  #     - main
       
 env:
   # A Dockerfile-ban lévő alap image
