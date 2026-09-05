@@ -37,19 +37,6 @@ COPY --parents requirements.txt homeassistant/package_constraints.txt homeassist
 ENV PIP_BUILD_CONSTRAINT=/etc/pip-build-constraints.txt
 ENV UV_BUILD_CONSTRAINT=/etc/pip-build-constraints.txt
 
-#RUN --network=host
-
-#    && pip3 install --no-cache-dir \
-#        setuptools \
-#        wheel \
-#        pybind11 \
-#        meson-python \
-#        poetry-core \
-#        maturin \
-#        flit-core \
-#        expandvars \
-#        cffi \
-
 RUN \
     # A korlátozás rögzítése a rendszer szintű fájlba
     echo "cython<3.2.7" > /etc/pip-build-constraints.txt \
@@ -84,8 +71,7 @@ RUN \
     && UV_CONSTRAINT=/tmp/constraints.txt uv pip install \
         -r homeassistant/requirements_all.txt \
         --index-strategy unsafe-best-match \
-    && apk del --no-cache .build-deps
-    
+    && apk del --no-cache .build-deps    
 
 ## Setup Home Assistant Core
 COPY --parents LICENSE* README* homeassistant/ pyproject.toml homeassistant/
