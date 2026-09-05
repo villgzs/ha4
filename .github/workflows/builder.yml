@@ -100,7 +100,7 @@ jobs:
 
   build-armv6:
     name: Build arm/v6
-    needs: prepare
+    needs: build-armv7
     runs-on: ubuntu-latest
     permissions:
       contents: read
