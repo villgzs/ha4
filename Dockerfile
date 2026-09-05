@@ -39,36 +39,34 @@ ENV UV_BUILD_CONSTRAINT=/etc/pip-build-constraints.txt
 
 #RUN --network=host
 
+#    && pip3 install --no-cache-dir \
+#        setuptools \
+#        wheel \
+#        pybind11 \
+#        meson-python \
+#        poetry-core \
+#        maturin \
+#        flit-core \
+#        expandvars \
+#        cffi \
+
 RUN \
     # A korlátozás rögzítése a rendszer szintű fájlba
     echo "cython<3.2.7" > /etc/pip-build-constraints.txt \
     # Verify go2rtc can be executed
     && go2rtc --version \
     && apk add --no-cache libffi libjpeg-turbo zlib freetype \
-    # && apk add --no-cache --virtual .build-deps cmake make ninja meson gcc g++ musl-dev rust cargo linux-headers libffi-dev jpeg-dev zlib-dev freetype-dev \
     && apk add --no-cache --virtual .build-deps \
         cmake make ninja meson gcc g++ musl-dev \
         rust cargo linux-headers \
         libffi-dev jpeg-dev zlib-dev freetype-dev \
         ffmpeg-dev \
-    && echo "cython<3.2.7" > build-constraints.txt \
     # Install uv at the version pinned in the requirements file
     && pip3 install --no-cache-dir "uv==$(awk -F'==' '/^uv==/{print $2}' homeassistant/requirements.txt)" \
-    && pip3 install --no-cache-dir \
-        setuptools \
-        wheel \
-        pybind11 \
-        meson-python \
-        poetry-core \
-        maturin \
-        flit-core \
-        expandvars \
-        cffi \
     && uv pip install \
         --index-strategy unsafe-best-match \
         -r homeassistant/requirements.txt \
     && apk del --no-cache .build-deps
-
 
 COPY requirements_all.txt home_assistant_frontend-* home_assistant_intents-* homeassistant/
 
